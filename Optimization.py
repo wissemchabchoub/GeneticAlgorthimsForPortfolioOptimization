@@ -4,6 +4,7 @@ from nsga2.problem import Problem
 from nsga2.evolution import Evolution
 import pickle
 import os
+import matplotlib.pyplot as plt
 
 class Optimization:
     
@@ -56,7 +57,9 @@ class Optimization:
         
        
     """
-    
+
+    import numpy as np
+
     def __init__(self,data_path,portfolios_path,rf):
         
         """
@@ -297,10 +300,17 @@ class Optimization:
         function1 = [i[0] for i in func]
         function2 = [i[1] for i in func]
 
+        plt.scatter(function1,function2)
+        plt.title('Paret Set of Optimar Portfolios')
+        plt.xlabel('Risk')
+        plt.ylabel('Return')
+
+        plt.savefig(self.portfolios_path+'/front_'+str(run_day)+'.png')
+
 
         selected_portfolio=self.choose_portfolio(solutions,function1,function2,policy,L,B)
         
-        with open(self.portfolios_path+'portfolio_'+str(run_day)+'.p', 'wb') as f:
+        with open(self.portfolios_path+'/portfolio_'+str(run_day)+'.p', 'wb') as f:
             pickle.dump(selected_portfolio, f)
         
         
