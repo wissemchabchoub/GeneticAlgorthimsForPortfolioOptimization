@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from nsga2.problem import Problem
 from nsga2.evolution import Evolution
-import matplotlib.pyplot as plt
 import pickle
 import os
 
@@ -77,14 +76,19 @@ class Optimization:
         self.portfolios_path=portfolios_path
         self.rf=rf
 
-        files=os.listdir('data_path')
+        files=os.listdir(data_path)
         tables=[]
         for f in files:
-            table=pd.read_csv(f)
-            table.index=pd.todatetume(table.index)
+            table=pd.read_csv(data_path+'/'+f)
+            table.index=pd.to_datetime(table.Date)
+            tables.append(table)
 
-        self.data=pd.read_csv(data_path)
-        self.assets=self.data.columns
+        data=pd.DataFrame(index=tables[0].index)
+        for f,table in zip(files,tables):
+            data[f]=table.Open
+
+        self.data=data
+        self.assets=data.columns
         self.N=len(self.assets)
         
     def closest_point(self,node,nodes):
@@ -122,14 +126,14 @@ class Optimization:
         dataframe
             the dataframe of 10-days historical returns
         """
-        
-        
-        all_real_returns=pd.DataFrame(index=self.data[0].iloc[::10].index,columns=asset_names)
+
+        all_real_returns=pd.DataFrame(index=self.data.iloc[::10].index,columns=self.assets.copy())
+
         for i in range(self.N):
-            all_real_returns.iloc[:,i]=self.data[i].Open.iloc[::10].pct_change().values
+            all_real_returns.loc[:,self.assets[i]]=self.data.loc[:,self.assets[i]].iloc[::10].pct_change().values
 
         all_real_returns=all_real_returns.iloc[1:]
-        all_real_returns['rf']=rf*0.01
+        all_real_returns['rf']=self.rf*0.01
         all_real_returns=all_real_returns.fillna(0)
         
         return all_real_returns
@@ -280,11 +284,11 @@ class Optimization:
         def f2(x):
             return self.return_portfolio(x,predictions)
 
-        portfolio_size=self.N_assets
+        portfolio_size=self.N
         Q=Q
         Q_rfa=Q_rfa
         if(C==0):
-            C=self.N_assets
+            C=portfolio_size
 
         problem = Problem(portfolio_size=portfolio_size, objectives=[f1, f2],Q=Q,Q_rfa=Q_rfa,C=C)
         evo = Evolution(problem, num_of_generations, num_of_individuals, num_of_tour_particips,tournament_prob, p_c,p_m,p_risked,full=True)
