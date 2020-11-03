@@ -22,4 +22,4 @@ In this project, we are using NSGA II algorithm to optimize a constrained portfo
 1. `data`: Where the input prices are saved and the optimized portfolios will be saved
 2. `nsga2`: Contains the adapted nsga2 python implementation
 3. `Optimization.py`: The main optimization class
-4. `Notebook.ipynb`: a Jupyter notebook for running and testing
+4. `Test.ipynb`: a Jupyter notebook for running and testing
