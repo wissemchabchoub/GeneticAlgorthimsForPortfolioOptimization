@@ -13,9 +13,11 @@
 
 ## 🧐 About <a name = "about"></a>
 
-In this project, we are using NSGA II algorithm to optimize a constrained portfolio. These constraints include no short selling, cardinality, and quantity constraint.
+In this project, we are using NSGA II algorithm to optimize a constrained portfolio. These constraints include no short selling, cardinality, and quantity constraints.
 
-![Alt text](pareto.png?raw=true "Set of Optimal Portfolios")
+<p align="center">
+  <img src="pareto.png?raw=true" />
+</p>
 
 
 
