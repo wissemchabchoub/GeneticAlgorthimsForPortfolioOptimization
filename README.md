@@ -15,6 +15,9 @@
 
 In this project, we are using NSGA II algorithm to optimize a constrained portfolio. These constraints include no short selling, cardinality, and quantity constraint.
 
+![Alt text](pareto.png?raw=true "Set of Optimal Portfolios")
+
+
 
 ## 🎥 Repository Structure  <a name = "repo-struct"></a>
 
